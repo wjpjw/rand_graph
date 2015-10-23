@@ -19,11 +19,13 @@ void                   init_graph(graph* g, int N){
 }
 
 void                   add_edge(graph* g, int v1, int v2){
+    // Add dual edge
     adjacency_list* al1=(adjacency_list*)malloc(sizeof(adjacency_list));
     al1->v=v1;
     init(&al1->node);
     push_back(&g->lists[v2].node, &al1->node);
 
+    // Add dual edge
     adjacency_list* al2=(adjacency_list*)malloc(sizeof(adjacency_list));
     al2->v=v2;
     init(&al2->node);
