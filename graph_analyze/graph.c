@@ -32,6 +32,16 @@ void                   add_edge(graph* g, int v1, int v2){
     g->nr_edges++;
 }
 
+void         free_graph(graph * g)
+{
+    for (int i=0; i<g->nr_vertices; i++)
+    {
+        init(&g->lists[i].node);
+    }
+    free(g);
+}
+
+
 graph* load_graph(char* file_name)
 {
     FILE * fp;
@@ -110,7 +120,7 @@ graph* load_graph(char* file_name)
         }
     }
     
-    if (number_edges != 0) printf("Number of edges appears to be incorrect!\n");
+    if (number_edges != 0) printf("Number of edges appears to be incorrect!\n"); // Sanity Check
     
     fclose(fp);
     if (line) free(line);
@@ -120,60 +130,68 @@ graph* load_graph(char* file_name)
 
 #define SAM_FALSE 0
 #define SAM_TRUE 1
+#define bool char
 
-
-int find_clusters_recursive(graph * g, char * validity, int index)
+// not_explored_yet is array of booleans storing whether or not that node has been expanded yet;
+int find_clusters_recursive_depth_first(graph * g, bool * not_explored_yet, int index)
 {
     int connections = 1;
-    validity[index] = SAM_FALSE;
+    not_explored_yet[index] = SAM_FALSE;
     
     list_node*head=&g->lists[index].node;
     for(list_node* pos=begin(head);not_ended(head, pos);pos=pos->next)
     {
         int sister_dex = WJP(pos,adjacency_list,node)->v;
-        if (validity[sister_dex] == SAM_TRUE)
+        if (not_explored_yet[sister_dex] == SAM_TRUE)
         {
-            connections += find_clusters_recursive(g, validity, sister_dex);
+            connections += find_clusters_recursive_depth_first(g, not_explored_yet, sister_dex);
         }
     }
-
     return  connections;
 }
 
 void find_clusters(graph * g)
 {
-    char * validity = malloc((g->nr_vertices));
+    bool * not_explored_yet = malloc(sizeof(bool) * (g->nr_vertices));
+    int * number_of_clusters_with_count = malloc(sizeof(int) * (1 + g->nr_vertices));
     
-    for (int start_dex = 0; start_dex < g->nr_vertices; start_dex++) validity[start_dex] = SAM_TRUE;
-    
+    // Initialze Arrays
     for (int start_dex = 0; start_dex < g->nr_vertices; start_dex++)
     {
-        if (validity[start_dex] == SAM_TRUE)
+        not_explored_yet[start_dex] = SAM_TRUE;
+        number_of_clusters_with_count[start_dex] = 0;
+    }
+    
+    // Fill out Arrays, only do nodes that havent been explored yet!
+    for (int start_dex = 0; start_dex < g->nr_vertices; start_dex++)
+    {
+        if (not_explored_yet[start_dex] == SAM_TRUE)
         {
-            int cluster_count = find_clusters_recursive(g, validity, start_dex);
-            printf("Cluster With %i nodes\n", cluster_count);
+            int cluster_count = find_clusters_recursive_depth_first(g, not_explored_yet, start_dex);
+            number_of_clusters_with_count[cluster_count]++;
         }
     }
 
-    free(validity);
+    // Total number of nodes that werent clustered
+    int total_count = g->nr_vertices;
+    int largest_cluster_size = 0;
     
-}
-
-
-void                   print_graph(graph*g, char* file_name){
-    FILE * pFile;
-    pFile = fopen (file_name,"w");
-    fprintf (pFile, "Number of vertices:%d\n", g->nr_vertices);
-    fprintf (pFile, "Number of edges:%d\n", g->nr_edges);
-    for(int i=0;i<g->nr_vertices;i++)
+    for (int start_dex = 0; start_dex < g->nr_vertices; start_dex++)
     {
-        list_node*head=&g->lists[i].node;
-        fprintf(pFile, "v%d:", i);
-        for(list_node* pos=begin(head);not_ended(head, pos);pos=pos->next)
+        int number = number_of_clusters_with_count[start_dex];
+        if (number != 0)
         {
-            fprintf(pFile, "%d ", WJP(pos,adjacency_list,node)->v);
+            total_count -= number * start_dex;
+            largest_cluster_size = start_dex;
+            printf("Clusters with %i nodes: %i\n", start_dex, number);
         }
-        fprintf(pFile, "\n");
-    }  
-    fclose (pFile);
+    }
+    
+    printf("\nLargest Cluster Size: %i\n\n", largest_cluster_size);
+    
+    if (total_count != 0) printf("Every node was not clustered once: %i!\n", total_count); // Sanity Check
+
+    free(not_explored_yet);
+    free(number_of_clusters_with_count);
+    
 }

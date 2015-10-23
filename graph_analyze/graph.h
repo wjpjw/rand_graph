@@ -12,6 +12,8 @@ typedef struct{
   adjacency_list *lists;     // each vertice has a adjacency list. list[i] is the list head of the i-th vertice.   
 }graph;
 
+
+void                   free_graph(graph * g);
 void                   init_graph(graph* g, int N);
 void                   add_edge(graph* g, int v1, int v2);
 void                   find_clusters(graph * g);
