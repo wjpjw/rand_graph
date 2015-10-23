@@ -6,23 +6,19 @@
 
 int                    main(int argc, char* argv[])
 {
-  //[0] init
     if (argc == 2)
     {
         char output_filename[100];
         strcpy(output_filename, argv[1]);
         
         graph * g = load_graph(output_filename);
-
         find_clusters(g);
         free_graph(g);
-//        init_graph(&g, N);
-//        generate_rand_graph(&g, P);
-//        print_graph(&g, output_filename);
+
         return 0;
     }
     else
     {
-        printf("Incorrect number of args!\n");
+        printf("Incorrect number of args!\nThis should be called with one argument:\nthe file name to be analyzed!\n\n\n");
     }
 }

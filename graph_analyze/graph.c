@@ -140,8 +140,10 @@ graph* load_graph(char* file_name)
 #define SAM_TRUE 1
 #define bool char
 
-// not_explored_yet is array of booleans storing whether or not that node has been expanded yet;
-int find_clusters_recursive_depth_first(graph * g, bool * not_explored_yet, int index)
+int find_clusters_recursive_depth_first(graph * g, // Our graph data structure
+                                        bool * not_explored_yet, // array of booleans storing if node has been expanded yet
+                                        int index // Index of current node to expand
+                                        )
 {
     int connections = 1;
     not_explored_yet[index] = SAM_FALSE;
@@ -158,7 +160,11 @@ int find_clusters_recursive_depth_first(graph * g, bool * not_explored_yet, int 
     return connections;
 }
 
-void find_clusters_breadth_first(graph * g, bool * not_explored_yet, int index, list_node * frontier)
+void find_clusters_breadth_first(graph * g, // Our graph data structure
+                                 bool * not_explored_yet, // array of booleans storing if node has been expanded yet
+                                 int index, // Index of current node to expand
+                                 list_node * frontier
+                                 )
 {
     list_node * head=&g->lists[index].node;
     for(list_node* pos=begin(head); not_ended(head, pos); pos=pos->next)
@@ -175,8 +181,10 @@ void find_clusters_breadth_first(graph * g, bool * not_explored_yet, int index, 
     }
 }
 
-// not_explored_yet is array of booleans storing whether or not that node has been expanded yet;
-int find_clusters_recursive_breadth_first(graph * g, bool * not_explored_yet, int index)
+int find_clusters_recursive_breadth_first(graph * g, // Our graph data structure
+                                          bool * not_explored_yet, // array of booleans storing if node has been expanded yet
+                                          int index // Index of current node to expand
+                                          )
 {
     int connections = 0;
     not_explored_yet[index] = SAM_FALSE;
@@ -219,12 +227,12 @@ void find_clusters(graph * g)
         number_of_clusters_with_count[start_dex] = 0;
     }
     
-    // Fill out Arrays, only do nodes that havent been explored yet!
+    // Search for clusters, only search nodes that havent been explored yet!
     for (int start_dex = 0; start_dex < g->nr_vertices; start_dex++)
     {
         if (not_explored_yet[start_dex] == SAM_TRUE)
         {
-            if (1) // Depth First
+            if (0) // Depth First
             {
                 int cluster_count = find_clusters_recursive_depth_first(g, not_explored_yet, start_dex);
                 number_of_clusters_with_count[cluster_count]++;
