@@ -23,8 +23,7 @@ void                   add_edge(graph* g, int v1, int v2){
 }  
 void                   generate_rand_graph(graph* g, double P){
   for(int i=0;i<g->nr_vertices;i++){
-    for(int j=0;j<g->nr_vertices;j++){
-      if(j==i)continue;
+    for(int j=i+1;j<g->nr_vertices;j++){
       if(urand()<P){
 	add_edge(g, i, j);
       }
