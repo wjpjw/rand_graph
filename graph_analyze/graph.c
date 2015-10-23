@@ -126,7 +126,6 @@ int find_clusters_recursive(graph * g, char * validity, int index)
 {
     int connections = 1;
     validity[index] = SAM_FALSE;
-
     
     list_node*head=&g->lists[index].node;
     for(list_node* pos=begin(head);not_ended(head, pos);pos=pos->next)
