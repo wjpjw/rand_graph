@@ -36,8 +36,16 @@ void         free_graph(graph * g)
 {
     for (int i=0; i<g->nr_vertices; i++)
     {
-        init(&g->lists[i].node);
+        list_node * head = &g->lists[i].node;
+        while(!empty(head))
+        {
+            list_node * beginning = begin(head);
+            adjacency_list * al = WJP(beginning,adjacency_list,node);
+            erase(beginning); // REMOVE FROM THE LIST OF NODE
+            free(al);
+        }
     }
+    free(g->lists);
     free(g);
 }
 
@@ -138,8 +146,8 @@ int find_clusters_recursive_depth_first(graph * g, bool * not_explored_yet, int 
     int connections = 1;
     not_explored_yet[index] = SAM_FALSE;
     
-    list_node*head=&g->lists[index].node;
-    for(list_node* pos=begin(head);not_ended(head, pos);pos=pos->next)
+    list_node * head=&g->lists[index].node;
+    for(list_node* pos=begin(head); not_ended(head, pos); pos=pos->next)
     {
         int sister_dex = WJP(pos,adjacency_list,node)->v;
         if (not_explored_yet[sister_dex] == SAM_TRUE)
@@ -147,13 +155,62 @@ int find_clusters_recursive_depth_first(graph * g, bool * not_explored_yet, int 
             connections += find_clusters_recursive_depth_first(g, not_explored_yet, sister_dex);
         }
     }
-    return  connections;
+    return connections;
 }
+
+void find_clusters_breadth_first(graph * g, bool * not_explored_yet, int index, list_node * frontier)
+{
+    list_node * head=&g->lists[index].node;
+    for(list_node* pos=begin(head); not_ended(head, pos); pos=pos->next)
+    {
+        int sister_dex = WJP(pos,adjacency_list,node)->v;
+        if (not_explored_yet[sister_dex] == SAM_TRUE)
+        {
+            not_explored_yet[sister_dex] = SAM_FALSE;
+            adjacency_list * al=(adjacency_list*) malloc(sizeof(adjacency_list));
+            al->v=sister_dex;
+            init(&al->node);
+            push_back(frontier, &al->node);
+        }
+    }
+}
+
+// not_explored_yet is array of booleans storing whether or not that node has been expanded yet;
+int find_clusters_recursive_breadth_first(graph * g, bool * not_explored_yet, int index)
+{
+    int connections = 0;
+    not_explored_yet[index] = SAM_FALSE;
+    
+    // Created a frontier FIFO queue (linked list)
+    list_node * frontier = (list_node *) malloc(sizeof(list_node));
+    init(frontier);
+    
+    // Seed the frontier with the given node.
+    adjacency_list * al=(adjacency_list*) malloc(sizeof(adjacency_list));
+    al->v=index;
+    init(&al->node);
+    push_back(frontier, &al->node);
+    
+    while(!empty(frontier))
+    {
+        list_node * beginning = begin(frontier);
+        adjacency_list * al = WJP(beginning,adjacency_list,node);
+        erase(beginning); // REMOVE FROM THE LIST OF NODE
+        find_clusters_breadth_first(g, not_explored_yet, al->v, frontier);
+        free(al);
+        connections++;
+    }
+    
+    free(frontier);
+    return connections;
+}
+
 
 void find_clusters(graph * g)
 {
     bool * not_explored_yet = malloc(sizeof(bool) * (g->nr_vertices));
     int * number_of_clusters_with_count = malloc(sizeof(int) * (1 + g->nr_vertices));
+    number_of_clusters_with_count[g->nr_vertices] = 0;
     
     // Initialze Arrays
     for (int start_dex = 0; start_dex < g->nr_vertices; start_dex++)
@@ -167,8 +224,16 @@ void find_clusters(graph * g)
     {
         if (not_explored_yet[start_dex] == SAM_TRUE)
         {
-            int cluster_count = find_clusters_recursive_depth_first(g, not_explored_yet, start_dex);
-            number_of_clusters_with_count[cluster_count]++;
+            if (1) // Depth First
+            {
+                int cluster_count = find_clusters_recursive_depth_first(g, not_explored_yet, start_dex);
+                number_of_clusters_with_count[cluster_count]++;
+            }
+            else // Breadth First
+            {
+                int cluster_count = find_clusters_recursive_breadth_first(g, not_explored_yet, start_dex);
+                number_of_clusters_with_count[cluster_count]++;
+            }
         }
     }
 
