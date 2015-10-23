@@ -62,9 +62,9 @@
 			isa = PBXGroup;
 			children = (
 				221B4DA01BD99D4300694F35 /* list.h */,
+				221B4D9E1BD99D3F00694F35 /* graph.h */,
 				221B4D9D1BD99D3F00694F35 /* graph.c */,
 				221B4DA11BD99DEE00694F35 /* main.c */,
-				221B4D9E1BD99D3F00694F35 /* graph.h */,
 			);
 			path = grapher;
 			sourceTree = "<group>";

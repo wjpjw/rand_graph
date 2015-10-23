@@ -14,6 +14,7 @@ int                    main(int argc, char* argv[])
         
         graph * g = load_graph(output_filename);
 
+        find_clusters(g);
         free(g);
 //        init_graph(&g, N);
 //        generate_rand_graph(&g, P);

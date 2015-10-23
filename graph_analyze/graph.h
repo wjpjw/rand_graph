@@ -14,6 +14,7 @@ typedef struct{
 
 void                   init_graph(graph* g, int N);
 void                   add_edge(graph* g, int v1, int v2);
+void                   find_clusters(graph * g);
 graph*                 load_graph(char* file_name);
   
   
