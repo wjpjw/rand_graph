@@ -20,7 +20,7 @@ void                   init_graph(graph* g, int N){
 
 void                   add_edge(graph* g, int v1, int v2){
     adjacency_list* al1=(adjacency_list*)malloc(sizeof(adjacency_list));
-    al1->v=v2;
+    al1->v=v1;
     init(&al1->node);
     push_back(&g->lists[v2].node, &al1->node);
 
@@ -176,7 +176,7 @@ void find_clusters(graph * g)
     int total_count = g->nr_vertices;
     int largest_cluster_size = 0;
     
-    for (int start_dex = 0; start_dex < g->nr_vertices; start_dex++)
+    for (int start_dex = 0; start_dex <= g->nr_vertices; start_dex++)
     {
         int number = number_of_clusters_with_count[start_dex];
         if (number != 0)
