@@ -8,6 +8,6 @@
 * make
 * ./bin/graph_analyze ../data/10000_0p0001.txt
 
-## OR
+#### OR
 
 * valgrind --dsymutil=yes --leak-check=full ./bin/graph_analyze ../data/10000_0p0001.txt
