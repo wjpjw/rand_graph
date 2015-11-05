@@ -1,0 +1,12 @@
+Number of vertices:10
+Number of edges:21
+v0:1 2 3 4 
+v1:2 3 4 
+v2:3 4 
+v3:4 
+v4:
+v5:2 3 
+v6:4 
+v7:0 2 3 5 
+v8:2 
+v9:3 5 6 
