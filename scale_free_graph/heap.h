@@ -21,7 +21,7 @@ static inline int             left(int i)   {return 2*i+1;}
 static inline int             right(int i)  {return 2*i+2;}
 static inline heap*           create_heap(){
   heap* tmp = (heap*)malloc(sizeof(heap));
-  tmp->len  = 1000;
+  tmp->len  = 100000;
   tmp->size = 0;
   tmp->A    = (double**)malloc(sizeof(int*)*tmp->len);
   return tmp;

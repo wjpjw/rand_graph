@@ -57,11 +57,12 @@ double                 diameter(char*filename){
   graph*G=read_graph(filename);
   printf("graph nr_vertices:%d, nr_edges:%d\n", G->nr_vertices, G->nr_edges);
   for(int i=0;i<G->nr_vertices;i++){
-    dijkstra(G,i); //G is modified 
+
+    dijkstra(G,i); //G is modified
     double longest_shortest=0;
-    for(int i=0;i<G->nr_vertices;i++){
-      if(longest_shortest < G->vertices[i].priority){
-	longest_shortest= G->vertices[i].priority;
+    for(int j=0;j<G->nr_vertices;j++){
+      if(longest_shortest < G->vertices[j].priority){
+	longest_shortest= G->vertices[j].priority;
       }
     }
     if(longest_longest_shortest<longest_shortest){
@@ -75,9 +76,10 @@ double                 diameter(char*filename){
 void                    relax(graph*G, vertex*u,adjacency_list*adl){
   vertex*  v = &G->vertices[adl->v];
   double   tmp = u->priority + adl->weight;
-  if(v->priority>tmp){
+  if(v->priority>=tmp){
     v->priority=tmp;
-  }  
+  }
+  
 }  
 void                    dijkstra(graph*G, int vs){
   heap*Q=create_heap();
@@ -86,6 +88,7 @@ void                    dijkstra(graph*G, int vs){
     hh_insert(Q, PO(G->vertices[i]));          
   }
   G->vertices[vs].priority=0;
+  heapify(Q);
   while(!hh_empty(Q)){
     double*    p = hh_root(Q);
     vertex*    u = CO(p,vertex);
@@ -93,6 +96,7 @@ void                    dijkstra(graph*G, int vs){
     for(list_node*pos=begin(h);not_ended(h,pos);pos=pos->next){
       adjacency_list* adl= WJP(pos,adjacency_list,node);
       relax(G, u, adl);
+      heapify(Q);
     }  
   }  
 }  

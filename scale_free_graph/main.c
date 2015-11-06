@@ -6,6 +6,6 @@ int                    main(int argc, char* argv[]){
   char input_filename[100];
   strcpy(input_filename, argv[1]);
   //[1] read graph from file [2] find the scale-free graph's maximum shortest path among all vertices pairs
-  printf("diameter:%f\n",diameter(input_filename));
+  printf("diameter:%4lf\n",diameter(input_filename));
   return 0;
 }  

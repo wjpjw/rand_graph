@@ -31,5 +31,37 @@ static inline void            add_edge(graph* g, int v1, int v2, double weight){
   init(&al->node);
   push_back(&g->vertices[v1].list_head.node, &al->node);
   g->nr_edges++;
-}  
+
+  adjacency_list* al2=(adjacency_list*)malloc(sizeof(adjacency_list));
+  al2->v=v1;
+  al2->weight=weight;
+  init(&al2->node);
+  push_back(&g->vertices[v2].list_head.node, &al2->node);
+  g->nr_edges++;
+}
+
+static inline void            print_graph(graph*g){
+  for(int i=0;i<g->nr_vertices;i++){
+    vertex*v=&g->vertices[i];
+    printf("v%d:", i);
+    list_node* head=&v->list_head.node;
+    int j = 0;
+    for(list_node* pos=begin(head);not_ended(head, pos);pos=pos->next){
+      if (j != 0) printf(",");
+      adjacency_list*l=WJP(pos,adjacency_list,node);
+      printf(" %d,%f", l->v, l->weight);
+      j++;
+    }
+    printf("\n");
+  }  
+}
+static inline void            print_priority(graph*g){
+  for(int i=0;i<g->nr_vertices;i++){
+    vertex*v=&g->vertices[i];
+    printf("v%d:%f", i, v->priority);
+    printf("\n");
+  }  
+}
+
+
 #endif
