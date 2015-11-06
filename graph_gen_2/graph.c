@@ -95,6 +95,7 @@ void                   generate_rand_graph(graph* g, int starting_count){
     }
     
     free(number_edges);
+    free(current_edges);
 }
 void                   print_graph(graph*g, char* file_name){
     FILE * pFile;
