@@ -56,7 +56,6 @@ double                 diameter(char*filename){
   double longest_longest_shortest=0;
   graph*G=read_graph(filename);
   printf("graph nr_vertices:%d, nr_edges:%d\n", G->nr_vertices, G->nr_edges);
-  
   for(int i=0;i<G->nr_vertices;i++){
     dijkstra(G,i); //G is modified 
     double longest_shortest=0;
@@ -75,7 +74,7 @@ double                 diameter(char*filename){
 //update v's distance from vs after u is selected as the current nearest node, adl is the edge from u to v
 void                    relax(graph*G, vertex*u,adjacency_list*adl){
   vertex*  v = &G->vertices[adl->v];
-  int    tmp = u->priority + adl->weight;
+  double   tmp = u->priority + adl->weight;
   if(v->priority>tmp){
     v->priority=tmp;
   }  
