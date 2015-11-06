@@ -71,7 +71,7 @@ void                   print_graph(graph*g, char* file_name){
         for(list_node* pos=begin(head);not_ended(head, pos);pos=pos->next)
         {
             if (j != 0) fprintf(pFile, ",");
-            fprintf(pFile, " %d, %f", WJP(pos,adjacency_list,node)->v, urand());
+            fprintf(pFile, " %d,%f", WJP(pos,adjacency_list,node)->v, urand());
             j++;
         }
         fprintf(pFile, "\n");
