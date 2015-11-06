@@ -77,7 +77,7 @@ void                   generate_rand_graph(graph* g, int starting_count){
                     {
                         max_number_viable_edges -= number_edges[j]; // Can't select this edge no more!
                         current_edges[number_edges_connected_to] = j; // Remember We've Already connected node i to j
-                        number_edges_connected_to ++; // Count number of nodes we've connected i too                        
+                        number_edges_connected_to ++; // Count number of nodes we've connected i too
 
                         add_edge(g, i, j);
                         number_edges[i]++;

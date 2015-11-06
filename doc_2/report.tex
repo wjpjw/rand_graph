@@ -1,0 +1,81 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{cv}
+
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{amsthm}
+\usepackage[english]{babel}
+ 
+\newtheorem{theorem}{Theorem}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\name{\hspace{0.3cm}Jipeng, Sam}
+\info{CSE-6010 Assignment 3: \\[0.2cm]
+      Graph Analytics Part 2}
+      
+\bibliography{rjhpubs}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+
+\section{Literature Search And Expected Results, Sam}
+
+Herrera and Zufiria use a random walk algorithm to generate a scale-free network in [1].  They also outline  a more traditional approach to generating a scale free network in the beginning of the paper.  That approach is outlined here:
+
+\subsection{Initializing}
+\begin{enumerate}
+\item{Initialize the graph with $m_0$ nodes}
+\item{Create an edge between each of the initial nodes}
+\end{enumerate}
+
+In our implementation, $m_0$ was chosen to be 5.
+
+\subsection{Filling out Rest of Nodes}
+For each remaining node to be generated, the node most be connected to $m$ nodes.  In our implementation, $m$ was also chosen to be 5.
+
+Determine which node to connect the new node to was done using a probabilistic distribution where:
+
+\begin{equation} \nonumber
+p_{i}=\dfrac{k_{i}}{\sum_{j=1}^{n}k_{j}}
+\end{equation}
+
+Where $k_{i}$ represents the number of edges connected to node $i$, and $n$ is the set of nodes already in the graph that are not already connected to node $i$.  We draw from this distribution $m$ times, each time updating the set $n$ to no longer include the last edge that node $i$ was connected to.
+
+
+
+ 
+\section{Graph Analysis, Jipeng}
+
+\begin{thebibliography}{9}
+\bibitem{latexcompanion}
+  Carlos Herrera and Pedro J. Zufiria.
+  \textit{Generating Scale-free Networks with AdjustableClustering Coefficient Via Random Walks}.
+  http://arxiv.org/pdf/1105.3347.pdf
+\end{thebibliography}  
+
+\end{document}
