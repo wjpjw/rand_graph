@@ -5,7 +5,11 @@
 #include "graph.h"
 
 int                    main(int argc, char* argv[]){
-    //[0] init
+    if(argc <= 2)
+    {
+        printf("Need Some Args!");
+        exit(-1);
+    }
     srand((unsigned) time(NULL));
     int N=atoi(argv[1]);
     if(N <= 5)

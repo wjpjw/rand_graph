@@ -59,17 +59,22 @@ void                   generate_rand_graph(graph* g, int starting_count){
     free(number_edges);
 }
 void                   print_graph(graph*g, char* file_name){
-  FILE * pFile;
-  pFile = fopen (file_name,"w");
-  fprintf (pFile, "Number of vertices:%d\n", g->nr_vertices);
-  fprintf (pFile, "Number of edges:%d\n", g->nr_edges);
-  for(int i=0;i<g->nr_vertices;i++){
-    list_node*head=&g->lists[i].node; 
-    fprintf(pFile, "v%d:", i);
-    for(list_node* pos=begin(head);not_ended(head, pos);pos=pos->next){
-      fprintf(pFile, "%d ", WJP(pos,adjacency_list,node)->v);
-    }
-    fprintf(pFile, "\n");
-  }  
-  fclose (pFile);
-}  
+    FILE * pFile;
+    pFile = fopen (file_name,"w");
+    fprintf (pFile, "Number of vertices:%d\n", g->nr_vertices);
+    fprintf (pFile, "Number of edges:%d\n", g->nr_edges);
+    for(int i=0;i<g->nr_vertices;i++)
+    {
+        list_node*head=&g->lists[i].node;
+        fprintf(pFile, "v%d:", i);
+        int j = 0;
+        for(list_node* pos=begin(head);not_ended(head, pos);pos=pos->next)
+        {
+            if (j != 0) fprintf(pFile, ",");
+            fprintf(pFile, " %d, %f", WJP(pos,adjacency_list,node)->v, urand());
+            j++;
+        }
+        fprintf(pFile, "\n");
+    }  
+    fclose (pFile);
+}
